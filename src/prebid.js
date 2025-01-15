@@ -391,6 +391,16 @@ pbjsInstance.getConsentMetadata = function () {
   return allConsent.getConsentMeta()
 };
 
+pbjsInstance.getUserIds = function() {
+  console.log('getting user ids');
+  return {};
+}
+
+pbjsInstance.refreshUserIds = function() {
+  // NO-OP
+  console.log('refreshing user ids');
+}
+
 function getBids(type) {
   const responses = auctionManager[type]()
     .filter(bid => auctionManager.getAdUnitCodes().includes(bid.adUnitCode))
