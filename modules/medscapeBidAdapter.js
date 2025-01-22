@@ -15,6 +15,42 @@ const spec = {
     console.log(bidderConfig);
     // See what happens here
     // send bid request to medscape
+
+    const adSlots = validBidRequests.map((request) => {
+      return request.adUnitCode;
+    });
+
+    const scriptSrc = 'https://serving.mdscpxchg.com/ad'
+
+    const externalIds = `external_ids=${adSlots.join(',')}`
+
+    const npiHashed = `npihashed=${bidderConfig.provider.npi_hashed}`;
+
+    const scriptUrl = `${scriptSrc}?${externalIds}&${npiHashed}`
+
+    async function requestMedscapeBids() {
+      try {
+        const response = await fetch(scriptUrl);
+        if (!response.ok) {
+          throw new Error(`Response status: ${response.status}`);
+        }
+
+        const json = await response.json();
+
+        return json;
+      } catch (error) {
+        console.error(`Error fetching medscape bids: ${error}`);
+        return Promise.reject(error)
+      }
+    }
+
+    requestMedscapeBids().then((data) => {
+      debugger;
+      // if we get a response go to interpretResponse... unless that is called automatically
+    }).catch((error) => {
+      console.error(error);
+      debugger;
+    });
   },
   interpretResponse: (serverResponse, request) => {
     debugger;
