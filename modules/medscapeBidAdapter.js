@@ -1,4 +1,5 @@
 import {registerBidder} from '../src/adapters/bidderFactory.js';
+import { config } from '../src/config.js';
 
 const BIDDER_CODE = 'medscape';
 
@@ -9,6 +10,9 @@ const spec = {
   },
   buildRequests: (validBidRequests, bidderRequest) => {
     debugger;
+
+    const bidderConfig = config.getBidderConfig()['medscape'];
+    console.log(bidderConfig);
     // See what happens here
     // send bid request to medscape
   },
