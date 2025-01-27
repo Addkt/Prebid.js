@@ -6,13 +6,12 @@ const BIDDER_CODE = 'medscape';
 const spec = {
   code: BIDDER_CODE,
   isBidRequestValid: (bid) => {
-    return !!bid.params.placementId;
+    // Actually should check on whether us here...
+    const bidderConfig = config.getBidderConfig()['medscape'];
+    return bidderConfig.geo.toLowerCase() === 'us'
   },
   buildRequests: (validBidRequests, bidderRequest) => {
     const bidderConfig = config.getBidderConfig()['medscape'];
-    if (bidderConfig.geo.toLowerCase() !== 'us') {
-      return;
-    }
     console.log(bidderConfig);
     // See what happens here
     // send bid request to medscape
