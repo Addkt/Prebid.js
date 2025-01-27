@@ -9,15 +9,16 @@ const spec = {
     return !!bid.params.placementId;
   },
   buildRequests: (validBidRequests, bidderRequest) => {
-    debugger;
-
     const bidderConfig = config.getBidderConfig()['medscape'];
+    if (bidderConfig.geo.toLowerCase() !== 'us') {
+      return;
+    }
     console.log(bidderConfig);
     // See what happens here
     // send bid request to medscape
 
     const adSlots = validBidRequests.map((request) => {
-      return request.adUnitCode;
+      return `${bidderConfig.publisherDomain}_${request.adUnitCode}`;
     });
 
     const scriptSrc = 'https://serving.mdscpxchg.com/ad'
