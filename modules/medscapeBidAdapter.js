@@ -24,7 +24,7 @@ const spec = {
 
     const externalIds = `external_ids=${adSlots.join(',')}`
 
-    const npiHashed = `npihashed=${bidderConfig.provider.npi_hashed}`;
+    const npiHashed = `npi_hashed=${bidderConfig.provider.npi_hashed}`;
 
     const scriptUrl = `${scriptSrc}?${externalIds}&${npiHashed}`
 
