@@ -31,13 +31,42 @@ const spec = {
     ];
   },
   interpretResponse: (serverResponse, request) => {
-    debugger;
+    const bidResponses = [];
 
-    const winningBids = serverResponse.body.winners;
-    const validBidRequests = request.validBidRequests;
+    if (!serverResponse || !serverResponse.body || !serverResponse.body.winners) {
+      console.warn("Medscape: No valid bid responses found.");
+      return bidResponses;
+    }
 
-    // @TODO take serverResponse, called by prebid, and translat to standard prebid ssp response.
-    // THIS IS CALLED BY PREBID, not by me
+    const { winners } = serverResponse.body;
+    const { validBidRequests } = request;
+
+    winners.forEach((winner) => {
+      const matchedBidRequest = validBidRequests.find(
+        (bid) => bid.adUnitCode === winner.external_id
+      );
+
+      if (matchedBidRequest) {
+        bidResponses.push({
+          requestId: matchedBidRequest.bidId,
+          cpm: winner.price / 100, // Convert cents to dollars if necessary
+          width: winner.w,
+          height: winner.h,
+          creativeId: winner.winner_id, // Used for reporting, not rendering
+          dealId: winner.deal_id || null, // Pass the Deal ID
+          currency: "USD",
+          netRevenue: true,
+          ttl: 300, // TTL in seconds (5 minutes)
+          ad: "", // No actual ad markup; GAM will serve the creative
+          meta: {
+            advertiserDomains: [], // Optional: If you have domain data, pass it here
+          }
+        });
+      } else {
+        console.warn(`Medscape: No matching bid request for external_id ${winner.external_id}`);
+      }
+    });
+    return bidResponses;
   },
   getUserSyncs: () => {
     // Do we need this?
