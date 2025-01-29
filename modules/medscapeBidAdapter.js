@@ -60,10 +60,10 @@ const spec = {
           height: winner.h,
           creativeId: winner.winner_id, // Used for reporting, not rendering
           dealId: winner.deal_id || null, // Pass the Deal ID
-          currency: "USD",
+          currency: 'USD',
           netRevenue: true,
           ttl: 300, // TTL in seconds (5 minutes)
-          ad: "", // No actual ad markup; GAM will serve the creative
+          ad: '', // No actual ad markup; GAM will serve the creative
           meta: {
             advertiserDomains: [], // Optional: If you have domain data, pass it here
           }

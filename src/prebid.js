@@ -392,13 +392,13 @@ pbjsInstance.getConsentMetadata = function () {
 };
 
 pbjsInstance.getUserIds = function() {
-  console.log('getting user ids');
+  logInfo('getting user ids');
   return {};
 }
 
 pbjsInstance.refreshUserIds = function() {
   // NO-OP
-  console.log('refreshing user ids');
+  logInfo('refreshing user ids');
 }
 
 function getBids(type) {
