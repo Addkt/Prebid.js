@@ -1,5 +1,6 @@
 import {registerBidder} from '../src/adapters/bidderFactory.js';
 import { config } from '../src/config.js';
+import { logInfo, logWarn } from '../src/utils.js';
 
 const BIDDER_CODE = 'medscape';
 
@@ -20,6 +21,8 @@ const spec = {
     const npiHashed = `npi_hashed=${bidderConfig.provider.npi_hashed}`;
     const scriptUrl = `${scriptSrc}?${externalIds}&${npiHashed}`;
 
+    logInfo(`Fetching scriptUrl ${scriptUrl}`);
+
     // Prebid does the actual fetching, I just supply the method.
     return [
       {
@@ -34,12 +37,15 @@ const spec = {
     const bidResponses = [];
 
     if (!serverResponse || !serverResponse.body || !serverResponse.body.winners) {
-      console.warn("Medscape: No valid bid responses found.");
+      logWarn('Medscape: No valid bid responses found.');
       return bidResponses;
     }
 
     const { winners } = serverResponse.body;
     const { validBidRequests } = request;
+
+    logInfo(`Winners: ${JSON.stringify(winners)}`);
+    logInfo(`Valid requests: ${JSON.stringify(validBidRequests)}`);
 
     winners.forEach((winner) => {
       const matchedBidRequest = validBidRequests.find(
@@ -63,7 +69,7 @@ const spec = {
           }
         });
       } else {
-        console.warn(`Medscape: No matching bid request for external_id ${winner.external_id}`);
+        logWarn(`Medscape: No matching bid request for external_id ${winner.external_id}`);
       }
     });
     return bidResponses;
