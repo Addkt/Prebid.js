@@ -31,6 +31,11 @@ const spec = {
     ];
   },
   interpretResponse: (serverResponse, request) => {
+    debugger;
+
+    const winningBids = serverResponse.body.winners;
+    const validBidRequests = request.validBidRequests;
+
     // @TODO take serverResponse, called by prebid, and translat to standard prebid ssp response.
     // THIS IS CALLED BY PREBID, not by me
   },
