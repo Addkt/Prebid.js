@@ -191,7 +191,10 @@ function buildRequests(validBidRequests, bidderRequest) {
     method: BIDDER.REQUEST_METHOD,
     url: `https://${BIDDER.HOST}${BIDDER.REQUEST_ENDPOINT}`,
     data: krakenParams,
-    currency: currency
+    currency: currency,
+    options: {
+      endpointCompression: true,
+    }
   });
 }
 
